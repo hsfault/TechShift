@@ -1,0 +1,167 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #080d1a;
+  --color-paper: #f2f5fa;
+  --color-mute: #9aa3b5;
+  --color-accent: #8fb4ff;
+  --color-glow: #4d7cff;
+
+  --font-display: "Archivo", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+html {
+  background: #080d1a;
+}
+
+body {
+  margin: 0;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Let the fixed night backdrop show through every page section */
+main .bg-ink {
+  background-color: transparent;
+}
+
+/* Lenis smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.wide {
+  font-weight: 800;
+  font-stretch: 125%;
+  letter-spacing: -0.02em;
+}
+
+.outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(242, 245, 250, 0.6);
+}
+
+/* Solid dark surface. No blur, so it stays cheap to scroll. */
+.glass {
+  background: rgba(14, 20, 36, 0.84);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Faint line grid that fades out toward the edges */
+.grid-lines {
+  background-image:
+    linear-gradient(rgba(143, 180, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(143, 180, 255, 0.07) 1px, transparent 1px);
+  background-size: 72px 72px;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 45%, #000 15%, transparent 72%);
+  mask-image: radial-gradient(ellipse at 50% 45%, #000 15%, transparent 72%);
+}
+
+/* Soft fade-in for the 3D laptop */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.fade-in {
+  animation: fade-in 0.9s ease-out both;
+}
+
+/* Brand marquee */
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+.marquee-track {
+  animation: marquee 45s linear infinite;
+  will-change: transform;
+}
+.marquee-track.reverse {
+  animation-direction: reverse;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+.marquee-word {
+  transition: color 0.3s ease, -webkit-text-stroke-color 0.3s ease;
+}
+.marquee-word:hover {
+  color: #f2f5fa;
+  -webkit-text-stroke-color: transparent;
+}
+
+/* Floating laptops, light streaks, scan line */
+@keyframes float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-1deg); }
+  50% { transform: translate3d(0, -14px, 0) rotate(1deg); }
+}
+.float-a { animation: float 7s ease-in-out infinite; }
+.float-b { animation: float 9s ease-in-out -2s infinite; }
+.float-c { animation: float 8s ease-in-out -4s infinite; }
+
+@keyframes streak {
+  0% { transform: translateX(-60%); opacity: 0; }
+  15%, 85% { opacity: 1; }
+  100% { transform: translateX(320%); opacity: 0; }
+}
+.streak {
+  position: absolute;
+  left: 0;
+  height: 2px;
+  width: 36%;
+  background: linear-gradient(90deg, transparent, rgba(143, 180, 255, 0.85), transparent);
+  animation: streak 7s linear infinite;
+  opacity: 0;
+}
+
+@keyframes scan {
+  to { transform: translateY(0); }
+}
+.scan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent calc(100% - 46px),
+    rgba(143, 180, 255, 0.14) calc(100% - 2px),
+    rgba(214, 228, 255, 0.9) 100%
+  );
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
+  transform: translateY(-100%);
+  animation: scan 4.5s ease-in-out infinite alternate;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .marquee-track,
+  .float-a,
+  .float-b,
+  .float-c,
+  .streak,
+  .scan {
+    animation: none !important;
+  }
+}
